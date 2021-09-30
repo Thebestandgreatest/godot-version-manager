@@ -5,7 +5,7 @@ onready var dropDown = get_node(dropDownPath)
 
 func _ready():
 	
-	$HTTPRequest.request("https://api.github.com/repos/godotengine/godot/tags")
+	$HTTPRequest.request("https://api.github.com/repos/godotengine/godot/releases")
 
 func _on_HTTPRequest_request_completed(_result, response_code, _headers, body):
 	if response_code != 200:
