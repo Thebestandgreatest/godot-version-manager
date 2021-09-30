@@ -1,0 +1,54 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Main.gd" type="Script" id=1]
+
+[node name="Main" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+dropDownPath = NodePath("HBoxContainer/Version Selector")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -512.0
+margin_top = -44.0
+margin_right = 512.0
+margin_bottom = 20.0
+custom_constants/separation = 20
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Version Selector" type="OptionButton" parent="HBoxContainer"]
+margin_left = 413.0
+margin_right = 533.0
+margin_bottom = 64.0
+text = "Godot Version"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Launch Version" type="Button" parent="HBoxContainer"]
+margin_left = 553.0
+margin_right = 610.0
+margin_bottom = 64.0
+text = "Launch"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HTTPRequest" type="HTTPRequest" parent="."]
+
+[node name="Output" type="Label" parent="."]
+margin_right = 40.0
+margin_bottom = 14.0
+
+[connection signal="request_completed" from="HTTPRequest" to="." method="_on_HTTPRequest_request_completed"]
