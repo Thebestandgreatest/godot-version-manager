@@ -51,4 +51,5 @@ __meta__ = {
 margin_right = 40.0
 margin_bottom = 14.0
 
+[connection signal="pressed" from="HBoxContainer/Launch Version" to="." method="_on_Launch_Version_pressed"]
 [connection signal="request_completed" from="HTTPRequest" to="." method="_on_HTTPRequest_request_completed"]
