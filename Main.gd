@@ -6,11 +6,11 @@ export(NodePath) var dropDownPath
 onready var dropDown = get_node(dropDownPath)
 
 func _ready():
-	print("requesting releases")
+	print("Requesting Releases")
 	$"Versions Request".request("https://api.github.com/repos/godotengine/godot/releases")
 
 func _on_HTTPRequest_request_completed(_result, response_code, _headers, body):
-	print("requests complete")
+	print("Request Complete")
 	if response_code != 200:
 		push_error("Unable to get JSON data error %d" % [response_code])
 		return
@@ -43,8 +43,10 @@ func _on_Launch_Version_pressed():
 
 func _on_ConfirmationDialog_confirmed():
 	print("confirmed download")
-	$"Version Download".request("https://api.github.com/repos/godotengine/godot/releases/%s" % [versionName])
+	#$"Version Download".request("https://api.github.com/repos/godotengine/godot/releases/download/%s/Godot_v%s_win64.exe.zip" % [versionName])
+	$"Version Download".download_file = "user://"
+	$"Versions Request".request("https://api.github.com/repos/godotengine/godot/releases/download/%s/Godot_v%s_win64.exe.zip" % [versionName, versionName])
 
-
-func _on_Version_Download_request_completed(_result, response_code, _headers, body):
-	print(body)
+func _on_Version_Download_request_completed(_result, response_code, _headers, _body):
+	if response_code == 200:
+		print("finished download of version %s" % [versionName])
