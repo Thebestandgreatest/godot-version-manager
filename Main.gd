@@ -44,9 +44,9 @@ func _on_Launch_Version_pressed():
 func _on_ConfirmationDialog_confirmed():
 	print("confirmed download")
 	#$"Version Download".request("https://api.github.com/repos/godotengine/godot/releases/download/%s/Godot_v%s_win64.exe.zip" % [versionName])
-	$"Version Download".download_file = "user://"
-	$"Versions Request".request("https://api.github.com/repos/godotengine/godot/releases/download/%s/Godot_v%s_win64.exe.zip" % [versionName, versionName])
+	downloadFile(versionName)
 
-func _on_Version_Download_request_completed(_result, response_code, _headers, _body):
-	if response_code == 200:
-		print("finished download of version %s" % [versionName])
+func downloadFile(version):
+	var output = []
+	OS.execute("curl", ["-s", "https://api.github.com/repos/godotengine/godot/releases"], true, output)
+	print(output[0][1])
