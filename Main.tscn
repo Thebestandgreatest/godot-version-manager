@@ -9,7 +9,6 @@ script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-dropDownPath = NodePath("HBoxContainer/Version Selector")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 anchor_left = 0.5
@@ -68,7 +67,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Version Download" type="HTTPRequest" parent="."]
+
 [connection signal="item_selected" from="HBoxContainer/Version Selector" to="." method="_on_Version_Selector_item_selected"]
 [connection signal="pressed" from="HBoxContainer/Launch Version" to="." method="_on_Launch_Version_pressed"]
 [connection signal="request_completed" from="Versions Request" to="." method="_on_HTTPRequest_request_completed"]
 [connection signal="confirmed" from="Confirm Download" to="." method="_on_ConfirmationDialog_confirmed"]
+[connection signal="request_completed" from="Version Download" to="." method="_on_Version_Download_request_completed"]
