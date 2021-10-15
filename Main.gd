@@ -24,29 +24,39 @@ func _on_HTTPRequest_request_completed(_result, response_code, _headers, body):
 		
 		for i in jsonData.result.size():
 			dropDown.add_item(jsonData.result[i].name)
+		dropDown.select(0)
+		versionName = dropDown.get_item_text(0)
 	else:
 		push_error("JSON parsing fail")
 
 func _on_Version_Selector_item_selected(index):
-	print(index)
-	print(dropDown.get_item_text(index))
 	versionName = dropDown.get_item_text(index)
 
 func _on_Launch_Version_pressed():
 	var file = File.new()
 	if file.file_exists("user://%s.exe" % [versionName]):
-		var _output = OS.execute("user://%s.exe" % [versionName], [])
+		var output = OS.execute(ProjectSettings.globalize_path("user://%s" % [versionName]), ["-p"], true)
+		print(output)
 	else:
 		$"Confirm Download".set_text("Are you sure you want to download %s?" % [versionName])
 		$"Confirm Download".popup_centered()
 
-
 func _on_ConfirmationDialog_confirmed():
 	print("confirmed download")
-	#$"Version Download".request("https://api.github.com/repos/godotengine/godot/releases/download/%s/Godot_v%s_win64.exe.zip" % [versionName])
 	downloadFile(versionName)
 
 func downloadFile(version):
-	var output = []
-	OS.execute("curl", ["-s", "https://api.github.com/repos/godotengine/godot/releases"], true, output)
-	print(output[0][1])
+	var file = File.new()
+	file.open("res://versions.json", File.READ)
+	var data = file.get_as_text()
+	file.close()
+	var jsonData = JSON.parse(data)
+	
+	if typeof(jsonData.result) != TYPE_ARRAY:
+		push_error("json fail")
+		return
+	
+	for i in range(jsonData.result.size()):
+		if jsonData.result[i].name == version:
+			var output = OS.execute('curl', [str("%s" % [jsonData.result[i].assets[20].browser_download_url]), "-L", "-O", '"', ProjectSettings.globalize_path("user://%s.exe.zip" % [version]), '"'], true, [])
+			print(output)
